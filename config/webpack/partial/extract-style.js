@@ -50,6 +50,14 @@ module.exports = function () {
     loader: ExtractTextPlugin.extract({ fallback: styleLoader, use: cssQuery, publicPath: "" })
   }];
 
+  rules.push({
+    test: /main\.scss$/,
+    use: ExtractTextPlugin.extract({
+      fallback: 'style-loader',
+      use: ['css-loader', 'sass-loader'],
+    }),
+  });
+
   if (cssModuleStylusSupport) {
     rules.push({
       _name: "extract-css-stylus",
@@ -67,7 +75,7 @@ module.exports = function () {
   if (cssModuleSupport) {
     rules.push({
       _name: "postcss",
-      test: /\.scss$/,
+      test: /((?!main).{4})\.scss$/,
       use: [
         {
           loader: "postcss-loader",
